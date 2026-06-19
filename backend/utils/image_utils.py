@@ -20,3 +20,13 @@ def resize_image(image: np.ndarray, max_dimension: int = 400) -> np.ndarray:
 
     resized = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_AREA)
     return resized
+
+def image_to_pixels(image: np.ndarray) -> np.ndarray:
+    """
+    Transforma uma imagem (altura x largura x 3) em uma lista de
+    pixels no formato (n_pixels, 3), convertendo de BGR para RGB.
+    """
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    pixels = image_rgb.reshape((-1, 3))
+    pixels = np.float32(pixels)
+    return pixels
