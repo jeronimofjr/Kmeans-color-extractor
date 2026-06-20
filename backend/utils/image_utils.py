@@ -56,3 +56,14 @@ def bytes_to_image(file_bytes: bytes) -> np.ndarray:
         raise ValueError("Não foi possível decodificar a imagem. Verifique o formato do arquivo.")
 
     return image
+
+def image_to_png_bytes(image: np.ndarray) -> bytes:
+    """
+    Codifica um array numpy em bytes no formato PNG.
+    """
+    success, buffer = cv2.imencode(".png", image)
+
+    if not success:
+        raise ValueError("Falha ao codificar a imagem em PNG.")
+
+    return buffer.tobytes()
