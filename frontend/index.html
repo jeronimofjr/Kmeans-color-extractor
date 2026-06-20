@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paleta &mdash; Extrator de cores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <main>
+    <section class="hero">
+      <h1>Envie uma imagem.<br>Receba a paleta de cores dela.</h1>
+      <p class="hero-copy">
+       Faça upload de uma foto para extrair cores e gerar uma paleta de cores personalizada a partir de qualquer imagem.
+      </p>
+    </section>
+
+    <section class="panel">
+
+      <form id="upload-form" class="controls">
+        <label for="file-input" id="dropzone" class="dropzone">
+          <input type="file" id="file-input" name="file" accept="image/png, image/jpeg" hidden />
+          <div class="dropzone-inner">
+            <svg class="dropzone-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="6" y="6" width="36" height="36" rx="4" stroke="currentColor" stroke-width="2"/>
+              <circle cx="17" cy="17" r="3" stroke="currentColor" stroke-width="2"/>
+              <path d="M6 32L17 22L26 30L34 23L42 30" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="dropzone-title">Arraste uma imagem ou clique para escolher</span>
+            <span class="dropzone-meta" id="file-name">JPEG ou PNG</span>
+          </div>
+        </label>
+
+        <div class="settings">
+          <div class="field">
+            <label for="n-colors">Número de cores</label>
+            <input type="range" id="n-colors" name="n_colors" min="1" max="10" value="5" />
+            <output id="n-colors-output" for="n-colors">5</output>
+          </div>
+
+          <div class="field">
+            <label for="algorithm">Algoritmo</label>
+            <div>K-Means</div>
+          </div>
+        </div>
+
+        <button type="submit" id="submit-btn" class="submit-btn" disabled>
+          Extrair paleta
+        </button>
+      </form>
+
+      <div id="status" class="status" hidden></div>
+
+      <div id="result" class="result" style="display: none;" hidden>
+        <figure class="result-image-wrap">
+          <img id="result-image" alt="Imagem processada com a paleta anexada" />
+          <div>sodeopdklpadk</div>
+        </figure>
+
+            <ul id="swatch-strip" class="swatch-strip"></ul>
+      </div>
+            <a id="download-link" class="download-link" download="paleta.png">
+            Baixar imagem com a paleta
+            </a>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
