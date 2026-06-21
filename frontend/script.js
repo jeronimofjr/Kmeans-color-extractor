@@ -29,7 +29,6 @@ function setFile(file) {
   selectedFile = file;
   fileNameEl.textContent = file.name;
   submitBtn.disabled = false;
-  console.log("IMAGEM ", file.name, " lida corretamente")
   hideResult();
   setStatus("");
 }
@@ -71,7 +70,6 @@ form.addEventListener("submit", async (event) => {
   const formData = new FormData();
   formData.append("file", selectedFile);
   formData.append("n_colors", nColorsInput.value);
-  formData.append("response_format", "both");
 
   try {
     const response = await fetch(API_ENDPOINT, {
@@ -86,7 +84,7 @@ form.addEventListener("submit", async (event) => {
     }
 
     const data = await response.json();
-    console.log(data)
+
     renderResult(data);
     setStatus("");
   } catch (error) {
@@ -123,6 +121,7 @@ function renderResult(data) {
   data.colors.forEach((color) => {
     const item = document.createElement("li");
     item.style.backgroundColor = color.hex;
+    item.style.color = readableTextColor(color.rgb)
     item.title = color.hex;
 
     const hexEl = document.createElement("span");
@@ -145,5 +144,10 @@ function renderResult(data) {
   });
 
   resultEl.hidden = false;
+}
+
+function readableTextColor([r, g, b]) {
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.6 ? "rgba(0,0,0,0.62)" : "rgba(255,255,255,0.82)";
 }
 
