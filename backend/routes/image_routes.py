@@ -5,12 +5,10 @@ Retorna a lista de cores em formato RGB/Hex e a imagem final codificada em Base6
 from fastapi import APIRouter, File, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
 
-from backend.services.k_means import extract_colors
-from backend.services.palette_generator import append_palette_to_image
+from backend.utils.image_utils import bytes_to_image
 
-from backend.utils.image_utils import bytes_to_image, resize_image, image_to_pixels, image_to_png_bytes
+from backend.services.palette_pipeline import process_palette
 import base64
-
 
 router = APIRouter()
 
@@ -42,17 +40,7 @@ async def extract_palette(
     except ValueError as err:
         raise HTTPException(status_code=400, detail=str(err))
 
-
-    small_image = resize_image(image)
-
-    pixels = image_to_pixels(small_image)
-
-    color_palette = extract_colors(pixels, n_colors)
-
-    image_combined = append_palette_to_image(image, color_palette,  n_colors)
-
-    png_bytes = image_to_png_bytes(image_combined)
-
+    color_palette, png_bytes = process_palette(image, n_colors)
     encoded_image = base64.b64encode(png_bytes).decode("utf-8")
 
     return JSONResponse(content={
