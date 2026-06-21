@@ -1,6 +1,15 @@
 import numpy as np
 import cv2
 
+
+def bgr_to_rgb(image: np.ndarray) -> np.ndarray:
+    """
+    Converte imagem de BGR para RGB.
+    """
+
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    return image_rgb
+
 def resize_image(image: np.ndarray, max_dimension: int = 400) -> np.ndarray:
     """
     Redimensiona a imagem mantendo a proporção, de forma que a maior
@@ -24,7 +33,7 @@ def resize_image(image: np.ndarray, max_dimension: int = 400) -> np.ndarray:
 def image_to_pixels(image: np.ndarray) -> np.ndarray:
     """
     Transforma uma imagem (altura x largura x 3) em uma lista de
-    pixels no formato (n_pixels, 3), convertendo de BGR para RGB.
+    pixels no formato (n_pixels, 3).
     """
 
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -54,7 +63,7 @@ def bytes_to_image(file_bytes: bytes) -> np.ndarray:
 
     if image is None:
         raise ValueError("Não foi possível decodificar a imagem. Verifique o formato do arquivo.")
-
+    
     return image
 
 def image_to_png_bytes(image: np.ndarray) -> bytes:
