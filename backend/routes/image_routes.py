@@ -1,0 +1,60 @@
+from fastapi import APIRouter, File, UploadFile, Form, HTTPException
+from fastapi.responses import JSONResponse
+
+from backend.services.k_means import extract_colors
+from backend.services.palette_generator import append_palette_to_image
+
+from backend.utils.image_utils import bytes_to_image, resize_image, image_to_pixels, image_to_png_bytes
+import base64
+
+
+router = APIRouter()
+
+ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/jpg", "image/png"}
+
+@router.post("/palette")
+async def extract_palette(
+    file: UploadFile = File(..., description="Imagem JPEG ou PNG"),
+    n_colors: int = Form(5, ge=1, le=10, description="Número de cores para extrair")
+):
+
+    if file.content_type not in ALLOWED_CONTENT_TYPES:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                f"Formato de arquivo não suportado: '{file.content_type}'. "
+                "Envie uma imagem JPEG ou PNG."
+            ),
+        )
+
+    file_bytes = await file.read()
+
+    if not file_bytes:
+        raise HTTPException(status_code=400, detail="Arquivo de imagem vazio")
+
+    try:
+
+        image = bytes_to_image(file_bytes)
+    except ValueError as err:
+        raise HTTPException(status_code=400, detail=str(err))
+
+
+    small_image = resize_image(image)
+
+    pixels = image_to_pixels(small_image)
+
+    color_palette = extract_colors(pixels, n_colors)
+
+    image_combined = append_palette_to_image(image, color_palette,  n_colors)
+
+    png_bytes = image_to_png_bytes(image_combined)
+
+    encoded_image = base64.b64encode(png_bytes).decode("utf-8")
+
+    return JSONResponse(content={
+        "colors" : color_palette,
+        "image_base64" : f"data:image/png;base64,{encoded_image}"
+    })
+
+
+
