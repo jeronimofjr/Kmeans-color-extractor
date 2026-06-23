@@ -6,8 +6,7 @@ import numpy as np
 from typing import List, Dict
 from sklearn.cluster import KMeans
 
-from backend.utils.image_utils import rgb_to_hex
-
+from backend.utils.color_utils import rgb_to_hex
 
 def extract_colors(
     pixels: np.ndarray,
