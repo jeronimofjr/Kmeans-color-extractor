@@ -33,7 +33,7 @@ function setFile(file) {
   setStatus("Upload da imagem concluída com sucesso.");
   setTimeout(() => {
           setStatus("");
-  }, 1500);
+  }, 1000);
 }
 
 

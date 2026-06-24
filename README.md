@@ -70,6 +70,7 @@ Resposta: imagem
 │   │   ├── palette_generator.py
 │   │   └── palette_pipeline.py
 │   ├── utils
+│   │   ├── color_utils.py
 │   │   └── image_utils.py
 │   └── app.py
 ├── docs
@@ -80,6 +81,9 @@ Resposta: imagem
 │   ├── index.html
 │   ├── script.js
 │   └── style.css
+├── tests
+│   ├── test_endpoint.py
+│   └── test_palette.py
 ├── Dockerfile
 ├── README.md
 └── requirements.txt
@@ -112,7 +116,7 @@ Acesse:
 
 ---
 
-## Rodando com Docker
+## Rodando localmente com Docker
 
 ```bash
 docker build -t kmeans-extractor-colors .
@@ -128,7 +132,7 @@ docker run -p 8000:8000 kmeans-extractor-colors
 | Campo | Tipo | Padrão | Descrição |
 |---|---|---|---|
 | `file` | arquivo | — | Imagem JPEG ou PNG |
-| `n_colors` | int | `10` | Número de cores para extrair (1–10) |
+| `n_colors` | int | `5` | Número de cores para extrair (1–10) |
 
 
 
